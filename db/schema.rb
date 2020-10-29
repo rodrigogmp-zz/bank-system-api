@@ -10,7 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_12_165158) do
+ActiveRecord::Schema.define(version: 2020_10_28_222001) do
+
+  create_table "accounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "cpf"
+    t.float "balance", default: 0.0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["cpf"], name: "index_accounts_on_cpf"
+    t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "operations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "account_id"
+    t.integer "operation"
+    t.float "value"
+    t.integer "account_id_to_transfer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_operations_on_account_id"
+  end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "provider", default: "email", null: false
@@ -37,4 +57,5 @@ ActiveRecord::Schema.define(version: 2019_04_12_165158) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "operations", "accounts"
 end
