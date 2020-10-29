@@ -3,5 +3,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  has_one :account
+  has_one :account, dependent: :destroy
 end

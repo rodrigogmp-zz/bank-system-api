@@ -1,0 +1,541 @@
+{
+	"info": {
+		"_postman_id": "7c8f7a49-1729-4f48-9872-a5dccd91e5c1",
+		"name": "bank-system-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bfcc3a98-8bcb-4331-bdd2-fe114310b089",
+								"exec": [
+									"if (responseCode.code === 200)",
+									"{",
+									"postman.setEnvironmentVariable(\"access-token\", postman.getResponseHeader('access-token'));",
+									"postman.setEnvironmentVariable(\"client\", postman.getResponseHeader('client'));",
+									"postman.setEnvironmentVariable(\"uid\", postman.getResponseHeader('uid'));",
+									"postman.setEnvironmentVariable(\"resource-type\", postman.getResponseHeader('resource-type'));",
+									"}",
+									"",
+									"var responseJSON;",
+									"",
+									"try { responseJSON = JSON.parse(responseBody); }",
+									"catch (e) { }",
+									"",
+									"if ('id' in responseJSON)",
+									"{",
+									"postman.setEnvironmentVariable((postman.getResponseHeader('resource-type') + \"_id\"), responseJSON.id);",
+									"}",
+									"",
+									"tests[\"Response time is less than 200ms\"] = responseTime < 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"rodrigo@blu.com.br\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/sign_in",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sign_in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "client",
+								"value": "{{client}}",
+								"type": "text"
+							},
+							{
+								"key": "access-token",
+								"value": "{{access-token}}",
+								"type": "text"
+							},
+							{
+								"key": "uid",
+								"value": "{{uid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/sign_out",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sign_out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"rodrigo@teste.com\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Operations",
+					"item": [
+						{
+							"name": "Deposit",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client",
+										"value": "{{client}}",
+										"type": "text"
+									},
+									{
+										"key": "access-token",
+										"value": "{{access-token}}",
+										"type": "text"
+									},
+									{
+										"key": "uid",
+										"value": "{{uid}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"operation\": \"deposit\",\n    \"value\": 500\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/account/operations",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"account",
+										"operations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Withdraw",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client",
+										"value": "{{client}}",
+										"type": "text"
+									},
+									{
+										"key": "uid",
+										"value": "{{uid}}",
+										"type": "text"
+									},
+									{
+										"key": "access-token",
+										"value": "{{access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"operation\": \"withdraw\",\n    \"value\": 700\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/account/operations",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"account",
+										"operations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Transference",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client",
+										"value": "{{client}}",
+										"type": "text"
+									},
+									{
+										"key": "uid",
+										"value": "{{uid}}",
+										"type": "text"
+									},
+									{
+										"key": "access-token",
+										"value": "{{access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"operation\": \"transference\",\n    \"value\": 500,\n    \"account_id_to_transfer\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/account/operations",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"account",
+										"operations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List my operations",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client",
+										"value": "{{client}}",
+										"type": "text"
+									},
+									{
+										"key": "uid",
+										"value": "{{uid}}",
+										"type": "text"
+									},
+									{
+										"key": "access-token",
+										"value": "{{access-token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/account/operations",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"account",
+										"operations"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "My account",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "client",
+								"value": "{{client}}",
+								"type": "text"
+							},
+							{
+								"key": "access-token",
+								"value": "{{access-token}}",
+								"type": "text"
+							},
+							{
+								"key": "uid",
+								"value": "{{uid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "client",
+								"value": "{{client}}",
+								"type": "text"
+							},
+							{
+								"key": "access-token",
+								"value": "{{access-token}}",
+								"type": "text"
+							},
+							{
+								"key": "uid",
+								"value": "{{uid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cpf\": 16237145672,\n    \"balance\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "client",
+								"value": "{{client}}",
+								"type": "text"
+							},
+							{
+								"key": "access-token",
+								"value": "{{access-token}}",
+								"type": "text"
+							},
+							{
+								"key": "uid",
+								"value": "{{uid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cpf\": \"16237145672\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Destroy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "client",
+								"value": "{{client}}",
+								"type": "text"
+							},
+							{
+								"key": "uid",
+								"value": "{{uid}}",
+								"type": "text"
+							},
+							{
+								"key": "access-token",
+								"value": "{{access-token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bank Statement",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "client",
+								"value": "{{client}}",
+								"type": "text"
+							},
+							{
+								"key": "uid",
+								"value": "{{uid}}",
+								"type": "text"
+							},
+							{
+								"key": "access-token",
+								"value": "{{access-token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/account/bank_statement",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"account",
+								"bank_statement"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

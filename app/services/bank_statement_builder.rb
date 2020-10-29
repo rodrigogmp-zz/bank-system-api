@@ -36,7 +36,7 @@ class BankStatementBuilder
       @bank_statement << object.merge(action: op.operation == 'transference' ? 'transfer_performed': op.operation, created_at: op.created_at)
     end
 
-    Operation.where(account_id_to_transfer: @account_id).each do |received_transfer|
+    Operation.where(account_id_to_transfer: @account.id).each do |received_transfer|
       @bank_statement << {
         balance_change: "+#{received_transfer.value}",
         sender_cpf: received_transfer.account.cpf,
